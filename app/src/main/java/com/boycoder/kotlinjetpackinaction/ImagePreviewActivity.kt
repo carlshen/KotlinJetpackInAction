@@ -15,7 +15,7 @@ class ImagePreviewActivity : AppCompatActivity() {
 
         val intent: Intent = getIntent();
         val url: String = intent.getStringExtra(MainActivity.EXTRA_PHOTO);
-        if (!TextUtils.isEmpty(url)) {
+        if (!url.isNullOrBlank()) {
             Glide.with(this@ImagePreviewActivity).load(url).into(imagePreview);
         }
     }

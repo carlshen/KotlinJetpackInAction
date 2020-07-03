@@ -42,26 +42,20 @@ class MainActivity : AppCompatActivity() {
         requestQueue = Volley.newRequestQueue(this);
         val url ="https://api.github.com/users/JakeWharton";
         stringRequest = StringRequest(Request.Method.GET, url,
-                Response.Listener<String>() {
-                    @Override
-                    fun onResponse(response: String) {
-                        display(response);
-                    }
-                }, Response.ErrorListener() {
-            @Override
-            fun onErrorResponse(error: VolleyError) {
-                Toast.makeText(this@MainActivity, error?.message, Toast.LENGTH_SHORT).show();
-            }
+                Response.Listener { response ->
+                    display(response);
+                }, Response.ErrorListener { error ->
+            Toast.makeText(this@MainActivity, error?.message, Toast.LENGTH_SHORT).show();
         });
         stringRequest.setTag(TAG);
         requestQueue.add(stringRequest);
     }
 
     private fun display(response: String?) {
-        if (TextUtils.isEmpty(response)) { return; }
+        if (response.isNullOrBlank()) { return; }
 
-        val gson: Gson = Gson();
-        val user: User = gson.fromJson(response, User::class.java);
+        val gson = Gson();
+        val user = gson.fromJson(response, User::class.java);
         user?.apply {
             Glide.with(this@MainActivity).load("file:///android_asset/bless.gif").into(gif);
             Glide.with(this@MainActivity).load(user.avatar_url).apply(RequestOptions.circleCropTransform()).into(image);
@@ -69,12 +63,9 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity.company.text = company;
             website.text = blog
 
-            image!!.setOnClickListener(View.OnClickListener() {
-                @Override
-                fun onClick(v: View?) {
-                    gotoImagePreviewActivity(user)
-                }
-            });
+            image!!.setOnClickListener {
+                gotoImagePreviewActivity(this)
+            };
         }
     }
 
@@ -86,8 +77,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop () {
         super.onStop();
-        if (requestQueue != null) {
-            requestQueue.cancelAll(TAG);
-        }
+        requestQueue.cancelAll(TAG);
     }
 }
