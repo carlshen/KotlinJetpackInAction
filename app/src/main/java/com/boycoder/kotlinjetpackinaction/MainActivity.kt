@@ -2,14 +2,11 @@ package com.boycoder.kotlinjetpackinaction;
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.boycoder.kotlinjetpackinaction.entity.User
@@ -19,10 +16,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        val TAG = "Main";
-        val EXTRA_PHOTO = "photo";
-    }
+    private val TAG = "Main";
 
     private lateinit var stringRequest: StringRequest;
     private lateinit var requestQueue: RequestQueue;
@@ -34,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        display(User.CACHE_RESPONSE);
+        display(CACHE_RESPONSE);
         requestOnlineInfo();
     }
 
